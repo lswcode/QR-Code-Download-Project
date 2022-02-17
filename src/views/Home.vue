@@ -83,7 +83,7 @@ export default defineComponent({
           window.URL.revokeObjectURL(url); // 释放掉blob对象
           state.num++;
 
-          // 以上的前提是: a标签的href地址必须是blob对象格式的URL，如果是普通图片地址，那就只能打开图片，无法实现下载
+          // 以上的前提是: a标签的href地址必须是blob对象格式的URL地址，如果是正常的图片地址，那就必须是本地的图片地址才能实现下载，如果是网上的非本地地址，那就只能打开图片，无法实现下载
         }
       } catch (err) {
         console.log(err);
