@@ -53,6 +53,7 @@ export default defineComponent({
       });
     };
     // -----------------------开始下载--------------------------------------------
+    // 注意这个方法只能在不跨域的情况下使用，因为点击a标签下载跨域地址的图片，是收到跨域限制的
     const download = async () => {
       ElMessage({
         showClose: true,
@@ -61,24 +62,28 @@ export default defineComponent({
       });
       try {
         const res = await downloadImg(
+          // 将图片地址作为http请求发送，正常情况下是返回一张图片，设置responseType: "blob"后，返回的是一个Blob对象，然后通过这个blob对象就可以下载图片了
           "https://cdn.gfitgo.com/rowing/lesson/100011/20103011013127279-thumb2x.png"
         );
-        console.log(res);
+        console.log("图片地址:", res.data);
         if (!res.data) {
           return;
         } else {
-          var name = "sinongtupin.png"; //图片名字
-          var blob = new Blob([res.data]); //把图片地址转换成Blob对象
+          var name = "sinongtupin.png"; // 图片名字
+          var blob = res.data; // 在axios中设置responseType: "blob"后，返回的res.data是一个二进制流Blob对象
           var url = window.URL.createObjectURL(blob); // 从blob对象中获取下载地址
-          var aLink = document.createElement("a"); // 创建一个下载链接
+          console.log("blob格式的url", url);
+          var aLink = document.createElement("a"); // 创建一个a标签作为下载链接
           aLink.style.display = "none"; // 隐藏这个a标签
-          aLink.href = url;
+          aLink.href = url; // 将a标签的href设置为经过blob转换的二进制流地址，然后点击这个a标签就可以下载href中的图片
           aLink.setAttribute("download", name); // 设置下载地址和图片名字，setAttribute()给元素添加指定的属性, a标签添加了属性download后，点击a标签即可触发下载功能 download="图片名字"
           document.body.appendChild(aLink);
           aLink.click(); // 点击a链接，触发下载方法
-          document.body.removeChild(aLink); //下载完成移除元素
-          window.URL.revokeObjectURL(url); //释放掉blob对象
+          document.body.removeChild(aLink); // 下载完成移除元素
+          window.URL.revokeObjectURL(url); // 释放掉blob对象
           state.num++;
+
+          // 以上的前提是: a标签的href地址必须是blob对象格式的URL，如果是普通图片地址，那就只能打开图片，无法实现下载
         }
       } catch (err) {
         console.log(err);

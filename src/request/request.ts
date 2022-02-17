@@ -9,9 +9,9 @@ export const getAddress = axios.create({
 });
 
 export const downloadRequest = axios.create({
+  // 创建一个基础axios，然后就可以使用 downloadRequest({ method: "GET", url:xx, })来发送请求了
   baseURL: "",
-  responseType: "blob",
-  // axios 请求头部加上responseType='blob'
+  responseType: "blob", // axios 请求头部加上responseType='blob'，表示返回的格式是blob对象
 });
 
 getAddress.interceptors.request.use((req: AxiosRequestConfig) => {

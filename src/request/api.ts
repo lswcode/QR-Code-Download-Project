@@ -18,6 +18,7 @@ export const getAddressReq = (data: unknown) => {
 
 export const downloadImg = (url: string) => {
   return downloadRequest({
+    // downloadRequest是使用axios.created创建的基础axios，在里面已经配置好了responseType: "blob"，所以使用downloadRequest发送的axios请求，接收的结果都会转换成blob格式
     method: "GET",
     url,
   });
