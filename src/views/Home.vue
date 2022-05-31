@@ -75,8 +75,8 @@ export default defineComponent({
           console.log("blob格式的url", url);
           var aLink = document.createElement("a"); // 创建一个a标签作为下载链接
           aLink.style.display = "none"; // 隐藏这个a标签
-          aLink.href = url; // 将a标签的href设置为经过blob转换的二进制流地址，然后点击这个a标签就可以下载href中的图片
-          aLink.setAttribute("download", name); // 设置下载地址和图片名字，setAttribute()给元素添加指定的属性, a标签添加了属性download后，点击a标签即可触发下载功能 download="图片名字"
+          aLink.href = url; // 如果a标签的href的值为二进制流文件的地址，点击这个a标签就可以下载这个文件
+          aLink.setAttribute("download", name); // download属性的值可以设置下载的文件名字，setAttribute()给元素添加指定的属性, a标签添加了属性download后，点击a标签即可触发下载功能，如果a标签中的地址是被后端处理过的文件流，则即使没有写download属性，也可以实现下载功能
           document.body.appendChild(aLink);
           aLink.click(); // 点击a链接，触发下载方法
           document.body.removeChild(aLink); // 下载完成移除元素
